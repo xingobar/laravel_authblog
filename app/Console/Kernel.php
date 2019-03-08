@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\Crawler::class,
     ];
 
     /**
@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('test:Log')->everyMinute()->withoutOverlapping();
     }
 
     /**
@@ -35,7 +36,11 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
+
+        // $schedule->call(function () {
+
+        // })->cron('* * * * * *')->withoutOverlapping();
 
         require base_path('routes/console.php');
     }

@@ -11,9 +11,11 @@ services:
       - ./:/var/www
     expose:
       - 9000
+    links:
+        - laravel_mysql:laravel_mysql
     environment:
       - PORT=3306
-      - DB_HOST=172.17.0.1
+      - DB_HOST=laravel_mysql
 
   laravel_nginx:
     build:
@@ -39,8 +41,8 @@ services:
       - "MYSQL_USER=homestead"
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_ROOT_PASSWORD=secret"
-    ports:
-      - 33061:3306
+    expose:
+        - 3306
 
 volumes:
   laravel_db:

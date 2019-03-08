@@ -32,10 +32,12 @@ services:
       - 80
 
   laravel_mysql:
-    image: 'mysql:5.7.24'
+    build:
+      context: './mysql'
     container_name: laravel_mysql
     volumes:
       - laravel_db:/var/lib/mysql
+      - ./mysql/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
     environment:
       - "MYSQL_DATABASE=homestead"
       - "MYSQL_USER=homestead"

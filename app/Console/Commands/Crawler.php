@@ -50,7 +50,7 @@ class Crawler extends Command
                 for(var index = 0; index < desc.length; index++){
                     descList.push({
                         desc:desc[index].innerText,
-                        star: star[index].innerText
+                        star: star[index].innerText.split('運勢')[1]
                     });
                 }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\LoginService;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -36,9 +37,10 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(LoginService $loginService)
     {
         $this->middleware('guest')->except('logout');
+        $this->loginService = $loginService;
     }
 
     public function redirectProvider()
@@ -48,26 +50,7 @@ class LoginController extends Controller
 
     public function callback()
     {
-        try {
-            $user = Socialite::driver('google')->user();
-        } catch (Exception $ex) {
-            Log::info($ex->getMessage());
-        }
-
-        $existedUser = User::where('email', $user->email)->first();
-
-        if (!$existedUser) {
-            $newUser = new User();
-            $newUser->name = $user->name;
-            $newUser->email = $user->email;
-            $newUser->avatar = $user->avatar;
-            $newUser->save();
-
-            Auth::login($newUser);
-        } else {
-            Auth::login($existedUser);
-        }
-
+        $this->loginService->login();
         return redirect()->to('/home');
     }
 }

@@ -18,7 +18,8 @@ class CreateConstellationDescTable extends Migration
             $table->integer('constellation_id')->comment = "星座代號";
             $table->integer('constellation_lucky_id')->comment = "運勢代號";
             $table->string('luck_star')->comment = "星星數";
-            $table->string('description')->comment = '說明內容';
+            $table->datetime('date')->comment = '日期';
+            $table->longText('description')->comment = '說明內容';
             $table->timestamps();
         });
     }

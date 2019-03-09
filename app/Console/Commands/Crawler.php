@@ -21,14 +21,13 @@ class Crawler extends Command
     public function handle()
     {
         $puppeteer = new Puppeteer;
-        $browser = $puppeteer->launch();
+        $browser = $puppeteer->launch(array('headless' => true, 'args' => array('--no-sandbox')));
 
         $page = $browser->newPage();
         $page->goto('http://astro.click108.com.tw/');
 
         $anchor_list = $page->evaluate(JsFunction::createWithBody("
-            var anchor =  document.querySelectorAll('.STAR12_BOX li > a');
-            var list = [];
+            var anchor =  document.querySelectorAll('.STAR12_BOX li > a'), list = [];
             for(var index =0 ; index < anchor.length; index++) {
                 list.push({
                         href: anchor[index].getAttribute('href'),
@@ -61,6 +60,5 @@ class Crawler extends Command
         }
 
         $browser->close();
-
     }
 }

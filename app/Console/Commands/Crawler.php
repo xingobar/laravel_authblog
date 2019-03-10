@@ -2,9 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Constellation;
-use App\ConstellationDesc;
-use App\ConstellationLucky;
+use App\Http\Services\CrawlerService;
 use Illuminate\Console\Command;
 use Nesk\Puphpeteer\Puppeteer;
 use Nesk\Rialto\Data\JsFunction;
@@ -13,7 +11,8 @@ class Crawler extends Command
 {
 
     // 命令名稱
-    protected $signature = 'test:Log';
+    protected $signature = 'crawler:start {--constellation=12}';
+    protected $page = null;
 
     public function __construct()
     {
@@ -26,12 +25,30 @@ class Crawler extends Command
         $puppeteer = new Puppeteer;
         $browser = $puppeteer->launch(array('headless' => true, 'args' => array('--no-sandbox')));
 
-        $page = $browser->newPage();
-        $page->goto('http://astro.click108.com.tw/');
+        $this->page = $browser->newPage();
+        $this->page->goto('http://astro.click108.com.tw/');
 
-        $anchor_list = $page->evaluate(JsFunction::createWithBody("
+        $anchor_list = $this->crawlerConstellation();
+
+        list($constellation_data, $today_date) = $this->crawlerConstellationDetail($anchor_list);
+
+        $browser->close();
+
+        $crawler_service = new CrawlerService();
+        $crawler_service->insertToDb($constellation_data, $today_date);
+        echo 'finish......';
+    }
+
+    /**
+     * 抓取星座連結以及星座名稱
+     *
+     * @return array $anchor_list -> 包含星座連結以及名稱
+     */
+    public function crawlerConstellation()
+    {
+        $anchor_list = $this->page->evaluate(JsFunction::createWithBody("
             var anchor =  document.querySelectorAll('.STAR12_BOX li > a'), list = [];
-            for(var index =0 ; index < anchor.length; index++) {
+            for(var index =0 ; index < " . $this->option('constellation') . "; index++) {
                 list.push({
                         href: anchor[index].getAttribute('href'),
                         text: anchor[index].innerText
@@ -41,11 +58,22 @@ class Crawler extends Command
             return list;
         "));
 
+        return $anchor_list;
+    }
+
+    /**
+     * 爬取星座詳細運勢資訊
+     *
+     * @param array $anchor_list 星座連結＆名稱資訊
+     * @return mixed 星座詳細資訊、當天日期
+     */
+    public function crawlerConstellationDetail($anchor_list)
+    {
         $constellation_data = array();
         $today_date = '';
         foreach ($anchor_list as $row) {
-            $page->goto($row['href']);
-            $data = $page->evaluate(JsFunction::createWithBody("
+            $this->page->goto($row['href']);
+            $data = $this->page->evaluate(JsFunction::createWithBody("
                 var selectedDate = document.querySelector('#iAcDay').value;
                 var desc = document.querySelectorAll('.TODAY_CONTENT p:nth-child(2n + 1)');
                 var star = document.querySelectorAll('.TODAY_CONTENT p:nth-child(2n)');
@@ -70,40 +98,6 @@ class Crawler extends Command
             $today_date = $data['selectedDate'];
         }
 
-        $browser->close();
-
-        if (ConstellationDesc::where('date', '=', $today_date)->count() > 0) {
-            return;
-        }
-
-        $constellation_luckies = ConstellationLucky::all();
-        $constellation_luckies_array = array();
-        foreach ($constellation_luckies as $lucky) {
-            $constellation_luckies_array[explode('運勢', $lucky['title'])[0]] = $lucky['id'];
-        }
-
-        $constellations = Constellation::all();
-        $constellations_array = array();
-        foreach ($constellations as $row) {
-            $constellations_array[$row['name']] = $row['id'];
-        }
-
-        foreach ($constellation_data as $row) {
-            $constellation_id = $constellations_array[$row['constellation']];
-
-            foreach ($row['desc'] as $desc) {
-                $lucky_id = $constellation_luckies_array[$desc['title']];
-
-                ConstellationDesc::insert(
-                    array(
-                        'constellation_id' => $constellation_id,
-                        'constellation_lucky_id' => $lucky_id,
-                        'luck_star' => $desc['star'],
-                        'date' => $today_date,
-                        'description' => $desc['desc'],
-                    )
-                );
-            }
-        }
+        return array($constellation_data, $today_date);
     }
 }

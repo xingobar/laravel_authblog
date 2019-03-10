@@ -18,5 +18,10 @@ RUN apt-get update \
     ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget curl zip unzip  \
    nodejs
 
-RUN apt-get install -y php7.0-zip \ 
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt-get install -y \
+    zlib1g-dev \
+    libzip-dev
+
+RUN docker-php-ext-install zip unzip
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

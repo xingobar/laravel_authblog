@@ -15,11 +15,6 @@ class CrawlerService
     public function insertToDb($constellation_data, $today_date)
     {
 
-        if (ConstellationDesc::where('date', '=', $today_date)->count() > 0) {
-            echo 'data exists......';
-            return;
-        }
-
         $constellation_luckies = ConstellationLucky::all();
         $constellation_luckies_array = array();
         foreach ($constellation_luckies as $lucky) {
@@ -34,6 +29,14 @@ class CrawlerService
 
         foreach ($constellation_data as $row) {
             $constellation_id = $constellations_array[$row['constellation']];
+
+            if (ConstellationDesc::where([
+                ['date', '=', $today_date],
+                ['constellation_id', $constellation_id],
+            ])->count() > 0) {
+                echo "constellation exists ${row['constellation']}";
+                continue;
+            }
 
             foreach ($row['desc'] as $desc) {
                 $lucky_id = $constellation_luckies_array[$desc['title']];

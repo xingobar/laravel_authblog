@@ -11,6 +11,8 @@
 |
  */
 
+use App\Http\Middleware\CheckConstellation;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -31,4 +33,4 @@ Route::group(['prefix' => '/login/social'], function () {
     ]);
 });
 
-Route::get('/constellation/{id}', 'ConstellationController@showConstellationDetail');
+Route::get('/constellation/{id}', 'ConstellationController@showConstellationDetail')->middleware(CheckConstellation::class);

@@ -20,6 +20,12 @@
         </div>
     </div>
 
+    @if($errors->has('constellation'))
+        <div class="alert alert-danger" role="alert">
+            {{$errors->first('constellation')}}
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-12">
             <ul>

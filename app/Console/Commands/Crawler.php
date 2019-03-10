@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Constellation;
+use App\ConstellationDesc;
+use App\ConstellationLucky;
 use Illuminate\Console\Command;
 use Nesk\Puphpeteer\Puppeteer;
 use Nesk\Rialto\Data\JsFunction;
@@ -38,6 +41,8 @@ class Crawler extends Command
             return list;
         "));
 
+        $constellation_data = array();
+        $today_date = '';
         foreach ($anchor_list as $row) {
             $page->goto($row['href']);
             $data = $page->evaluate(JsFunction::createWithBody("
@@ -47,18 +52,58 @@ class Crawler extends Command
                 var descList = [];
 
                 for(var index = 0; index < desc.length; index++){
+                    var splittedText = star[index].innerText.split('運勢');
                     descList.push({
                         desc:desc[index].innerText,
-                        star: star[index].innerText.split('運勢')[1]
+                        star: splittedText[1],
+                        title: splittedText[0]
                     });
                 }
 
                 return {selectedDate:selectedDate, desc:descList};
             "));
 
-            print_r($data);
+            $constellation_data[] = array(
+                'constellation' => $row['text'],
+                'desc' => $data['desc'],
+            );
+            $today_date = $data['selectedDate'];
         }
 
         $browser->close();
+
+        if (ConstellationDesc::where('date', '=', $today_date)->count() > 0) {
+            return;
+        }
+
+        $constellation_luckies = ConstellationLucky::all();
+        $constellation_luckies_array = array();
+        foreach ($constellation_luckies as $lucky) {
+            $constellation_luckies_array[explode('運勢', $lucky['title'])[0]] = $lucky['id'];
+        }
+
+        $constellations = Constellation::all();
+        $constellations_array = array();
+        foreach ($constellations as $row) {
+            $constellations_array[$row['name']] = $row['id'];
+        }
+
+        foreach ($constellation_data as $row) {
+            $constellation_id = $constellations_array[$row['constellation']];
+
+            foreach ($row['desc'] as $desc) {
+                $lucky_id = $constellation_luckies_array[$desc['title']];
+
+                ConstellationDesc::insert(
+                    array(
+                        'constellation_id' => $constellation_id,
+                        'constellation_lucky_id' => $lucky_id,
+                        'luck_star' => $desc['star'],
+                        'date' => $today_date,
+                        'description' => $desc['desc'],
+                    )
+                );
+            }
+        }
     }
 }

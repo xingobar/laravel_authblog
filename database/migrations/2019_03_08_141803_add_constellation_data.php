@@ -19,7 +19,7 @@ class AddConstellationData extends Migration
             ),
 
             array(
-                'name' => '水瓶座',
+                'name' => '雙魚座',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ),

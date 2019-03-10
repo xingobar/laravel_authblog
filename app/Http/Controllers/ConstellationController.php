@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constellation;
 use App\ConstellationDesc;
 
 class ConstellationController extends Controller
@@ -13,6 +14,7 @@ class ConstellationController extends Controller
 
         return view('constellation', [
             'detail' => ConstellationDesc::where('constellation_id', $id)->get(),
+            'constellation' => Constellation::select('name')->where('id', $id)->get()[0],
         ]);
     }
 }

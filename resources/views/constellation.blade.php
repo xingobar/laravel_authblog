@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                <h4>{{$constellation['name']}}</h4>
                 <h4>{{date('Y-m-d')}}</h4>
                 @foreach($detail as $row)
                     <p>

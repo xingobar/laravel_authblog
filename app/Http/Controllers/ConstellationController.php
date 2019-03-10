@@ -13,7 +13,10 @@ class ConstellationController extends Controller
     {
 
         return view('constellation', [
-            'detail' => ConstellationDesc::where('constellation_id', $id)->get(),
+            'detail' => ConstellationDesc::where([
+                'constellation_id' => $id,
+                'date' => date('Y-m-d'),
+            ])->get(),
             'constellation' => Constellation::select('name')->where('id', $id)->get()[0],
         ]);
     }

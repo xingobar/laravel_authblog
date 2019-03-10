@@ -64,7 +64,6 @@
                         <div class="text-center">
                             <p>其他登入方式</p>
                             <a href="{{route('social.redirect','google')}}" class="btn btn-lg btn-danger btn-block">Google</a>
-                            <a href="{{route('social.redirect', 'facebook')}}" class="btn btn-lg btn-info btn-block">Facebook</a>
                         </div>
                     </form>
                 </div>

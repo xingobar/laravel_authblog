@@ -11,6 +11,6 @@ class Constellation extends Model
 
     public function descriptions()
     {
-        return $this->hasMany(App\ConstellationDesc, 'constellation_id', 'id');
+        return $this->hasMany('App\ConstellationDesc', 'constellation_id', 'id');
     }
 }

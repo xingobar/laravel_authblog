@@ -11,6 +11,6 @@ class ConstellationLucky extends Model
 
     public function descriptions()
     {
-        return $this->hasMany(App\ConstellationDesc, 'constellation_lucky_id', 'id');
+        return $this->hasMany('App\ConstellationDesc', 'constellation_lucky_id', 'id');
     }
 }

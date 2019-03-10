@@ -19,5 +19,17 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <ul>
+                @foreach($constellations as $constellation)
+                    <li>
+                        <a href="/constellation/{{$constellation->id}}">{{$constellation->name}}</a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
 </div>
 @endsection

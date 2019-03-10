@@ -30,3 +30,5 @@ Route::group(['prefix' => '/login/social'], function () {
         'uses' => 'Auth\LoginController@callback',
     ]);
 });
+
+Route::get('/constellation/{id}', 'ConstellationController@showConstellationDetail');

@@ -14,11 +14,11 @@ class ConstellationDesc extends Model
 
     public function constellations()
     {
-        return $this->belongsTo(App\Constellation, 'constellation_id');
+        return $this->belongsTo('App\Constellation', 'constellation_id');
     }
 
     public function constellation_luckies()
     {
-        return $this->belongsTo(App\ConstellationLucky, 'constellation_lucky');
+        return $this->belongsTo('App\ConstellationLucky', 'constellation_lucky_id');
     }
 }

@@ -9,10 +9,10 @@ use Socialite;
 
 class LoginService
 {
-    public function login()
+    public function login($provider)
     {
         try {
-            $user = Socialite::driver('google')->user();
+            $user = Socialite::driver($provider)->user();
         } catch (Exception $ex) {
             Log::info($ex->getMessage());
         }

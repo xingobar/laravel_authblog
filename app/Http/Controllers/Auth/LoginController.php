@@ -43,14 +43,14 @@ class LoginController extends Controller
         $this->loginService = $loginService;
     }
 
-    public function redirectProvider()
+    public function redirectProvider($provider)
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
-    public function callback()
+    public function callback($provider)
     {
-        $this->loginService->login();
+        $this->loginService->login($provider);
         return redirect()->to('/home');
     }
 }

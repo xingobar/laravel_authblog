@@ -19,8 +19,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/redirect', [
-    'as' => 'social.redirect',
-    'uses' => 'Auth\LoginController@redirectProvider',
-]);
-Route::get('/callback', ['as' => 'social.callback', 'uses' => 'Auth\LoginController@callback']);
+Route::group(['prefix' => '/login/social'], function () {
+    Route::get('{provider}/redirect', [
+        'as' => 'social.redirect',
+        'uses' => 'Auth\LoginController@redirectProvider',
+    ]);
+
+    Route::get('{provider}/callback', [
+        'as' => 'social.callback',
+        'uses' => 'Auth\LoginController@callback',
+    ]);
+});

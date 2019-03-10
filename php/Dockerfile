@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y libmcrypt-dev \
     && docker-php-ext-install mcrypt pdo_mysql mbstring \
     && docker-php-ext-install sockets
 
+RUN  apt-add-repository ppa:ondrej/php \
+     && apt-get update
+
 
 RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
 RUN apt-get update \

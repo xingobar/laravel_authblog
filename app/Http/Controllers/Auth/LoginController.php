@@ -7,7 +7,7 @@ use App\Http\Services\LoginService;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Log;
+use Illuminate\Http\Request;
 use Socialite;
 
 class LoginController extends Controller
@@ -50,7 +50,29 @@ class LoginController extends Controller
 
     public function callback($provider)
     {
-        $this->loginService->login($provider);
+        $this->loginService->providerLogin($provider);
         return redirect()->to('/home');
+    }
+
+    /**
+     * Validate the user login.
+     * @param Request $request
+     */
+    protected function login(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'email' => 'required|string',
+                'password' => 'required|string',
+            ],
+            [
+                'email.required' => 'Username or email is required',
+                'password.required' => 'Password is required',
+            ]
+        );
+
+        return $this->loginService->login($request);
+
     }
 }

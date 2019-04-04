@@ -45,3 +45,4 @@ Route::get('/sendmail', function () {
     return 'Your email has been sent successfully!';
 });
 
+Route::get('/send/reminder/email','UserController@sendReminderEmail');

@@ -12,6 +12,8 @@
  */
 
 use App\Http\Middleware\CheckConstellation;
+use Illuminate\Support\Facades\Mail;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,3 +36,12 @@ Route::group(['prefix' => '/login/social'], function () {
 });
 
 Route::get('/constellation/{id}', 'ConstellationController@showConstellationDetail')->middleware(CheckConstellation::class);
+
+Route::get('/sendmail', function () {
+    $data = ['name' => 'Test'];
+    Mail::send('email.welcome', $data, function ($message) {
+        $message->to('yourmail@.com')->subject('This is test email');
+    });
+    return 'Your email has been sent successfully!';
+});
+

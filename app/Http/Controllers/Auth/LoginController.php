@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Socialite;
 use Log;
+use Response;
 
 class LoginController extends Controller
 {
@@ -115,7 +116,6 @@ class LoginController extends Controller
         Log::info('phone: ' . $phone . '  |email: ' . $email );
         Log::info(json_encode($data));
 
-        return 'phone: ' . $phone . ' | email: ' . $email;
-
+       return Response::json($data);
     }
 }

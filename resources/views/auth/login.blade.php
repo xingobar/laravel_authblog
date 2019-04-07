@@ -82,7 +82,7 @@
             <input placeholder="phone number" id="phone_number"/>
             <button onclick="smsLogin();">Login via SMS</button>
             <div>OR</div>
-            <input placeholder="email" id="email"/>
+            <input placeholder="email" id="account_kit_email"/>
             <button onclick="emailLogin();">Login via Email</button>
         </div>
     </div>
@@ -137,7 +137,7 @@
 
   // email form submission handler
   function emailLogin() {
-    var emailAddress = document.getElementById("email").value;
+    var emailAddress = document.getElementById("account_kit_email").value;
     AccountKit.login(
       'EMAIL',
       {emailAddress: emailAddress},

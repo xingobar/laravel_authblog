@@ -100,9 +100,9 @@
       {
         appId:"406236216806661", 
         state: csrf_token, 
-        version:"v1.0",
+        version:"v1.1",
         fbAppEventsEnabled:true,
-        redirect:"/login/social/facebook/callback"
+        redirect:"/account_kit/login/success"
       }
     );
   };

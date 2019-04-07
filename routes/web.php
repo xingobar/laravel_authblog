@@ -50,9 +50,9 @@ Route::get('/send/reminder/email','UserController@sendReminderEmail'); // queue
 
 Route::get('/account_kit/login/success', function() {
     // Initialize variables
-$app_id = 'app id';
-$secret = 'secret';
-$version = 'v1.1'; // 'v1.1' for example
+$app_id = env('FACEBOOK_CLIENT_ID');
+$secret = env('ACCOUNT_KEY_SECRET');
+$version = env('ACCOUNT_KIT_VERSION'); // 'v1.1' for example
 
 // Method to send Get request to url
 function doCurl($url)

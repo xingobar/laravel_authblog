@@ -13,6 +13,7 @@
 
 use App\Http\Middleware\CheckConstellation;
 use Illuminate\Support\Facades\Mail;
+use Auth;
 
 
 Route::get('/', function () {
@@ -49,8 +50,8 @@ Route::get('/send/reminder/email','UserController@sendReminderEmail'); // queue
 
 Route::get('/account_kit/login/success', function() {
     // Initialize variables
-$app_id = '406236216806661';
-$secret = '02a8e2a35b84d02fd6b551a6a5961b0d';
+$app_id = 'app id';
+$secret = 'secret';
 $version = 'v1.1'; // 'v1.1' for example
 
 // Method to send Get request to url

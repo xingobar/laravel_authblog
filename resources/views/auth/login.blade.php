@@ -98,7 +98,7 @@
   AccountKit_OnInteractive = function(){
     AccountKit.init(
       {
-        appId:"406236216806661", 
+        appId:"appid", 
         state: csrf_token, 
         version:"v1.1",
         fbAppEventsEnabled:true,

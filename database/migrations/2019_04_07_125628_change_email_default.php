@@ -14,7 +14,7 @@ class ChangeEmailDefault extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->change();
         });
     }
 
@@ -26,7 +26,7 @@ class ChangeEmailDefault extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email');
+            $table->string('email')->change();
         });
     }
 }

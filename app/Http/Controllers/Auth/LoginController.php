@@ -98,7 +98,7 @@ class LoginController extends Controller
         // Exchange authorization code for access token
         $token_exchange_url = 'https://graph.accountkit.com/' . $version . '/access_token?' .
             'grant_type=authorization_code' .
-            '&code=' . $_POST['code'] .
+            '&code=' . $request->input('code') .
             "&access_token=AA|$app_id|$secret";
         $data = doCurl($token_exchange_url);
         $user_id = $data['id'];

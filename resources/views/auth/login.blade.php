@@ -117,6 +117,12 @@
       console.log('receive access token');
       console.log(response);
 
+      $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+     });
+
       $.ajax({
           url: '/account_kit/login/success',
           type:'post',

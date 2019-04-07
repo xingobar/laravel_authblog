@@ -87,11 +87,11 @@
         </div>
     </div>
 
-    <!-- <form id="login_success" method="post" action="/account_kit/login/success">
+    <form id="login_success" method="post" action="/account_kit/login/success">
         <input id="csrf" type="hidden" name="csrf" />
         <input id="code" type="hidden" name="code" />
         {!! csrf_field() !!}
-    </form> -->
+    </form>
 </div>
 @endsection
 
@@ -123,29 +123,9 @@
       console.log('receive access token');
       console.log(response);
 
-      $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-     });
-
-      $.ajax({
-          url: '/account_kit/login/success',
-          type:'post',
-          data: {
-              code:code,
-              csrf:csrf
-          },
-          success:function(res) {
-              console.log(res);
-          },error:function(){
-              console.log('error')
-          }
-      })
-
-    //   document.getElementById("code").value = response.code;
-    //   document.getElementById("csrf").value = response.state;
-    //   document.getElementById("login_success").submit();
+      document.getElementById("code").value = response.code;
+      document.getElementById("csrf").value = response.state;
+      document.getElementById("login_success").submit();
     }
     else if (response.status === "NOT_AUTHENTICATED") {
       // handle authentication failure

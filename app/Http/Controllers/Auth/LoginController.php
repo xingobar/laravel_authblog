@@ -116,6 +116,16 @@ class LoginController extends Controller
         Log::info('phone: ' . $phone . '  |email: ' . $email );
         Log::info(json_encode($data));
 
-       return Response::json($data);
+        $existedUser = User::where('name', $phone)->first()->update(['api_token' => uniqid(base64_encode(str_random(60)))]);
+
+        if($existedUser) {
+            Auth::login($existedUser);
+        } else {
+            $newUser = new User();
+            $newUser->name = $phone;
+            $newUser->api_token = uniqid(base64_encode(str_random(60)));
+        }
+
+       return Response::json(['phone' => $phone, 'access_token' => $user_access_token]);
     }
 }

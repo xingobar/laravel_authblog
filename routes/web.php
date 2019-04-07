@@ -13,7 +13,6 @@
 
 use App\Http\Middleware\CheckConstellation;
 use Illuminate\Support\Facades\Mail;
-use Auth;
 
 
 Route::get('/', function () {

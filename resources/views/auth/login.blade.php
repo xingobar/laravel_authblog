@@ -106,6 +106,7 @@
       }
     );
   };
+ })
 
   // login callback
   function loginCallback(response) {
@@ -146,7 +147,6 @@
       loginCallback
     );
   }
- })
 
  
 </script>

@@ -86,6 +86,11 @@
             <button onclick="emailLogin();">Login via Email</button>
         </div>
     </div>
+
+    <form id="login_success" method="post" action="/account_kit/login/success">
+        <input id="csrf" type="hidden" name="csrf" />
+        <input id="code" type="hidden" name="code" />
+    </form>
 </div>
 @endsection
 
@@ -102,7 +107,7 @@
         state: csrf_token, 
         version:"v1.1",
         fbAppEventsEnabled:true,
-        redirect:"/account_kit/login/success"
+        // redirect:"/account_kit/login/success"
       }
     );
   };
@@ -115,6 +120,11 @@
       var csrf = response.state;
       // Send code to server to exchange for access token
       console.log('receive access token');
+      console.log(response);
+
+      document.getElementById("code").value = response.code;
+      document.getElementById("csrf").value = response.state;
+      document.getElementById("login_success").submit();
     }
     else if (response.status === "NOT_AUTHENTICATED") {
       // handle authentication failure

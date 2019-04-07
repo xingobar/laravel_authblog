@@ -47,4 +47,4 @@ Route::get('/sendmail', function () {
 
 Route::get('/send/reminder/email','UserController@sendReminderEmail'); // queue
 
-Route::get('/account_kit/login/success','LoginController@smsLogin');
+Route::post('/account_kit/login/success','LoginController@smsLogin');

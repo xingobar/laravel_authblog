@@ -89,6 +89,7 @@
 </div>
 @endsection
 
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
   // initialize Account Kit with CSRF protection
   var csrf_token = $('meta[name="csrf-token"]').attr('content');

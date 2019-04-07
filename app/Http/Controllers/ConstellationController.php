@@ -20,4 +20,12 @@ class ConstellationController extends Controller
             'constellation' => Constellation::select('name')->where('id', $id)->get()[0],
         ]);
     }
+
+    public function showOne($id) 
+    {
+        return ConstellationDesc::where([
+            'constellation_id' => $id,
+            'date' => date('Y-m-d')
+        ])->get();
+    }
 }

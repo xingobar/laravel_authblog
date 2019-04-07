@@ -45,3 +45,25 @@
     </div>
 </div>
 @endsection
+
+<!-- https: //stackoverflow.com/questions/43281009/laravel-5-4-api-route-401 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+       var api_token =  $('meta[name="api-token"]').attr('content');
+       console.log(api_token)
+
+       $.ajax({
+           url:'/api/show/constellation/1',
+           type:'post',
+           headers: {
+                'Authorization':'Bearer ' + api_token,
+            },
+           success:function(response) {
+               console.log(response);
+           },error:function(xhr,status,err) {
+               console.log(err);
+           }
+       })
+    })
+</script>

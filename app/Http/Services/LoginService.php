@@ -24,10 +24,12 @@ class LoginService
             $newUser->name = $user->name;
             $newUser->email = $user->email;
             $newUser->avatar = $user->avatar;
+            $newUser->api_token = uniqid(base64_encode(str_random(60)));
             $newUser->save();
 
             Auth::login($newUser);
         } else {
+            User::where('email', $user->email)->update(['api_token' => uniqid(base64_encode(str_random(60)))]);
             Auth::login($existedUser);
         }
     }
@@ -45,6 +47,8 @@ class LoginService
         }
 
         if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            $api_token = uniqid(base64_encode(str_random(60)));
+            User::where('email', $request->input('email'))->update(['api_token' => $api_token]);
             Auth::login($user);
             return redirect()->to('/home');
         } else {

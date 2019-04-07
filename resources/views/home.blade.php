@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('meta')
+    @if(Auth::user()) 
+    <meta name="api-token" content="{{ Auth::user()->api_token }}">
+    @endif
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('script')
+    <script src="https://sdk.accountkit.com/zh_TW/sdk.js"></script>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -71,5 +75,73 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <input value="+1" id="country_code" />
+            <input placeholder="phone number" id="phone_number"/>
+            <button onclick="smsLogin();">Login via SMS</button>
+            <div>OR</div>
+            <input placeholder="email" id="email"/>
+            <button onclick="emailLogin();">Login via Email</button>
+        </div>
+    </div>
 </div>
 @endsection
+
+<script type="text/javascript">
+  // initialize Account Kit with CSRF protection
+  var csrf_token = $('meta[name="csrf-token"]').attr('content');
+  AccountKit_OnInteractive = function(){
+    AccountKit.init(
+      {
+        appId:"406236216806661", 
+        state: csrf_token, 
+        version:"v1.0",
+        fbAppEventsEnabled:true,
+        redirect:"/login/social/facebook/callback"
+      }
+    );
+  };
+
+  // login callback
+  function loginCallback(response) {
+    if (response.status === "PARTIALLY_AUTHENTICATED") {
+      var code = response.code;
+      var csrf = response.state;
+      // Send code to server to exchange for access token
+      console.log('receive access token');
+    }
+    else if (response.status === "NOT_AUTHENTICATED") {
+      // handle authentication failure
+      console.log('authenticate failure');
+    }
+    else if (response.status === "BAD_PARAMS") {
+      // handle bad parameters
+      console.log('bad parameters');
+    }
+  }
+
+  // phone form submission handler
+  function smsLogin() {
+    var countryCode = document.getElementById("country_code").value;
+    var phoneNumber = document.getElementById("phone_number").value;
+    AccountKit.login(
+      'PHONE', 
+      {countryCode: countryCode, phoneNumber: phoneNumber}, // will use default values if not specified
+      loginCallback
+    );
+  }
+
+
+  // email form submission handler
+  function emailLogin() {
+    var emailAddress = document.getElementById("email").value;
+    AccountKit.login(
+      'EMAIL',
+      {emailAddress: emailAddress},
+      loginCallback
+    );
+  }
+</script>
+

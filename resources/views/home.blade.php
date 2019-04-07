@@ -47,7 +47,6 @@
 @endsection
 
 <!-- https: //stackoverflow.com/questions/43281009/laravel-5-4-api-route-401 -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
        var api_token =  $('meta[name="api-token"]').attr('content');

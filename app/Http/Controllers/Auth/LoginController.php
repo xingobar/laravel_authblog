@@ -113,7 +113,7 @@ class LoginController extends Controller
         $phone = isset($data['phone']) ? $data['phone']['number'] : '';
         $email = isset($data['email']) ? $data['email']['address'] : '';
 
-        Log::info('phone: ' . $phone . '  |email: ' . $email );
+        Log::info('phone: ' . $phone . '  |email: ' . $email . ' |user_id: ' . $user_id );
         Log::info(json_encode($data));
 
         $existedUser = User::where('name', $phone)->first();
